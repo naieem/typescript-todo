@@ -1,12 +1,12 @@
 {
     "name": "studendatabase",
     "version": "1.0.0",
-    "description": "",
+    "description": "Native typescript to do app",
     "main": "index.js",
     "scripts": {
         "build": "webpack -w"
     },
-    "author": "",
+    "author": "Naieem Mahmud Supto",
     "license": "ISC",
     "devDependencies": {
         "babel-core": "^6.26.0",

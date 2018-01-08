@@ -24,9 +24,9 @@ export default class StudentService{
     // =======================================
     addNewStudent(){
         this.students.push(new student(5,'new',1010));
-        debugger;
+        
     }
     editStudent(data:any){
-        debugger;
+        
     }
 }
