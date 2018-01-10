@@ -33,6 +33,10 @@ class nuCleus {
         
         new loaders();
     }
+
+    // ===========================================
+    // deep cloning object
+    // ===========================================
     cloneObject(obj: any) {
         
         if (obj === null || typeof obj !== "object") {
