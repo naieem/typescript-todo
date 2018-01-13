@@ -1,4 +1,5 @@
 import actions from "./events";
+import student from "./student";
 export default class Dom {
     model: any = {};
     constructor() {
@@ -30,6 +31,7 @@ export default class Dom {
     }
 
     listEventListener() {
+        //let clickAction=new Dom();
         let elem = document.querySelectorAll("div#stList ul li");
         let model = this.model; // storing reference of input fields configuration
         let executeFunction = this.executeClickEvent; // taking reference of executing function
@@ -41,7 +43,8 @@ export default class Dom {
         }
     }
 
-    executeClickEvent(eventData: any, model: any) {
+    executeClickEvent(eventData: student, model: any) {
+        debugger;
         let formDom = document.getElementById("form");
         let txt = '';
         let storeModels: any = [];
@@ -49,7 +52,7 @@ export default class Dom {
         for (let index = 0; index < model.edit.length; index++) {
             if (model.edit[index].input.type == 'text') {
                 txt += '<label for="' + model.edit[index].label + '">' + model.edit[index].label + '</label>';
-                txt += '<input type="text" name="' + model.edit[index].input.modelName + '">';
+                txt += '<input type="text" st-model=' + model.edit[index].input.modelName + ' name="' + model.edit[index].input.modelName + '">';
                 storeModels.push(model.edit[index].input.modelName);
             }
             if (model.edit[index].input.type == 'button') {
@@ -57,24 +60,23 @@ export default class Dom {
                 if (model.edit[index].input.action) {
                     txt += 'st-click="' + model.edit[index].input.action + '"';
                 }
-                txt += " st-element st-data='" + dataObj + "'>" + model.edit[index].input.value + "</button>";
-                //storeModels.push(model.edit[index].input.modelName);
+                txt += " st-element st-data='" + dataObj + "'>" + model.edit[index].input.value + "</button>"
             }
         }
         debugger;
         formDom.innerHTML = txt;
-        new recycleDom().recycle();
-    }
-
-    updateData(data: any): void {
-        debugger;
+        new recycleDom(model,eventData);
     }
 }
 
 class recycleDom {
     actions: any;
-    constructor() {
-        this.actions = new actions();
+    identifier: any;
+    eventData:any;
+    constructor(identifier: any,eventData:any) {
+        this.identifier = identifier;
+        this.eventData=eventData;
+        this.recycle();
     }
     recycle() {
         var test = document.querySelectorAll('button[st-element]');
@@ -85,21 +87,39 @@ class recycleDom {
             //let data = test[index].attributes[3].value;
             //let action=this.actions; // stored for reference use in the click event
             debugger;
+            let execute = this.executeEvents;
             // eval("this.actions."+activity);
             // eval('this.actions()');
             // new actions().updateData();
             // new actions().
-            test[index].addEventListener('click', function (elem) {
+            test[index].addEventListener('click', function () {
+                let data = JSON.parse(test[index].getAttribute("st-data"));
+                var actions = test[index].getAttribute("st-click");
+                // eval("new Dom()."+actions+"(data)");
+                //eval("new actions()");
+                execute();
                 debugger;
-                let activity = elem.target.attributes[1].value;
-                let data = elem.attributes[3].value;
+                // let activity = elem.target.attributes;
+                // let data = elem.attributes[3].value;
                 // eval('actions'+'.'+activity+'('+data+')');
             });
 
         }
+        this.bindValue();
     }
 
     executeEvents() {
-
+        //alert('from execute events');
+        let y = new actions();
+        eval('y.sayHello()');
+    }
+    bindValue() {
+        for (let index = 0; index < this.identifier.edit.length; index++) {
+            if (this.identifier.edit[index].input.type == 'text') {
+                let bindElem = document.querySelector('[st-model="' + this.identifier.edit[index].input.modelName + '"]') as HTMLInputElement;
+                let val=this.eventData[this.identifier.edit[index].input.modelName];
+                bindElem.value = val;
+            }
+        }
     }
 }
