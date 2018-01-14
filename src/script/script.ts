@@ -1,7 +1,9 @@
 import actions from "./events";
 import student from "./student";
+import renderEvents from "./domActions";
 export default class Dom {
     model: any = {};
+    renderEvnt:any;
     constructor() {
         this.model = {
             edit: [{
@@ -28,10 +30,13 @@ export default class Dom {
             ]
         };
         this.listEventListener();
+        this.clickEventsListener();
     }
 
+    // ====================================
+    // event listener for list items
+    // ====================================
     listEventListener() {
-        //let clickAction=new Dom();
         let elem = document.querySelectorAll("div#stList ul li");
         let model = this.model; // storing reference of input fields configuration
         let executeFunction = this.executeClickEvent; // taking reference of executing function
@@ -43,6 +48,9 @@ export default class Dom {
         }
     }
 
+    // ===================================================
+    // execute function click event listener
+    // ===================================================
     executeClickEvent(eventData: student, model: any) {
         debugger;
         let formDom = document.getElementById("form");
@@ -65,59 +73,83 @@ export default class Dom {
         }
         debugger;
         formDom.innerHTML = txt;
-        new recycleDom(model,eventData);
+        /**
+         * initiated new class with eventdata and all DOM array element
+         * return {}
+         */
+        new recycleDom(model, eventData);
     }
-}
 
+    // ====================================================
+    // click event listener for elements having st-click
+    // ====================================================
+    clickEventsListener() {
+        debugger;
+        let elem = document.querySelectorAll("[st-click]");
+        let model = this.model; // storing reference of input fields configuration
+        let executeFunction = this.domModificationClickEventData; // taking reference of executing function
+        for (let index = 0; index < elem.length; index++) {
+            let actionsFnc = elem[index].getAttribute('st-click');
+            elem[index].addEventListener('click', function () {
+                executeFunction(actionsFnc);
+            });
+        }
+    }
+
+    domModificationClickEventData(actionName: any) {
+        let action = new actions();
+        let renderEvnt=new renderEvents();
+        action[actionName]();
+        renderEvnt.renderStudentList();
+    }
+
+}
+// ================================================================
+// DOM digest class.query for DOM element.
+// Modifies and bind data with dom element.
+// ================================================================
 class recycleDom {
     actions: any;
     identifier: any;
-    eventData:any;
-    constructor(identifier: any,eventData:any) {
+    eventData: any;
+    constructor(identifier: any, eventData: any) {
         this.identifier = identifier;
-        this.eventData=eventData;
-        this.recycle();
+        this.eventData = eventData;
+        this.recycle(); // digest dom button element
     }
+    // ====================================
+    // DOM element recycling function
+    // ====================================
     recycle() {
-        var test = document.querySelectorAll('button[st-element]');
+        let buttonElements = document.querySelectorAll('button[st-element]');
         debugger;
-        for (let index = 0; index < test.length; index++) {
-            const element = test[index];
-            //let activity = test[index].attributes[1].value;
-            //let data = test[index].attributes[3].value;
-            //let action=this.actions; // stored for reference use in the click event
-            debugger;
+        for (let index = 0; index < buttonElements.length; index++) {
             let execute = this.executeEvents;
-            // eval("this.actions."+activity);
-            // eval('this.actions()');
-            // new actions().updateData();
-            // new actions().
-            test[index].addEventListener('click', function () {
-                let data = JSON.parse(test[index].getAttribute("st-data"));
-                var actions = test[index].getAttribute("st-click");
-                // eval("new Dom()."+actions+"(data)");
-                //eval("new actions()");
-                execute();
-                debugger;
-                // let activity = elem.target.attributes;
-                // let data = elem.attributes[3].value;
-                // eval('actions'+'.'+activity+'('+data+')');
+            buttonElements[index].addEventListener('click', function () {
+                let data = JSON.parse(buttonElements[index].getAttribute("st-data"));
+                var actions = buttonElements[index].getAttribute("st-click");
+                execute(); // execute button click event
             });
 
         }
-        this.bindValue();
+        this.bindValue(); // bind value of the st-model elements
     }
-
+    // =====================================
+    // excutes submit button click event
+    // =====================================
     executeEvents() {
-        //alert('from execute events');
         let y = new actions();
         eval('y.sayHello()');
     }
+
+    // =========================================================
+    // binds value with input type with having model attribute
+    // =========================================================
     bindValue() {
         for (let index = 0; index < this.identifier.edit.length; index++) {
             if (this.identifier.edit[index].input.type == 'text') {
                 let bindElem = document.querySelector('[st-model="' + this.identifier.edit[index].input.modelName + '"]') as HTMLInputElement;
-                let val=this.eventData[this.identifier.edit[index].input.modelName];
+                let val = this.eventData[this.identifier.edit[index].input.modelName];
                 bindElem.value = val;
             }
         }

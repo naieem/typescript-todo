@@ -1,3 +1,8 @@
+/**
+ * some dummy student data for using while
+ * initialization of the application
+ * returns {Student list}
+ */
 import student from "./student";
 let students=[
     new student(1,'naieem1',101),
