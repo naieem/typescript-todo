@@ -52,7 +52,7 @@ export default class Dom {
     // execute function click event listener
     // ===================================================
     executeClickEvent(eventData: student, model: any) {
-        debugger;
+        
         let formDom = document.getElementById("form");
         let txt = '';
         let storeModels: any = [];
@@ -71,7 +71,7 @@ export default class Dom {
                 txt += " st-element st-data='" + dataObj + "'>" + model.edit[index].input.value + "</button>"
             }
         }
-        debugger;
+        
         formDom.innerHTML = txt;
         /**
          * initiated new class with eventdata and all DOM array element
@@ -84,19 +84,20 @@ export default class Dom {
     // click event listener for elements having st-click
     // ====================================================
     clickEventsListener() {
-        debugger;
+        debugger;    
         let elem = document.querySelectorAll("[st-click]");
         let model = this.model; // storing reference of input fields configuration
         let executeFunction = this.domModificationClickEventData; // taking reference of executing function
         for (let index = 0; index < elem.length; index++) {
             let actionsFnc = elem[index].getAttribute('st-click');
-            elem[index].addEventListener('click', function () {
+            elem[index].addEventListener('click', function (e) {
+                e.preventDefault();
                 executeFunction(actionsFnc);
             });
         }
     }
 
-    domModificationClickEventData(actionName: any) {
+    domModificationClickEventData(actionName: string) {
         let action = new actions();
         let renderEvnt=new renderEvents();
         action[actionName]();
@@ -122,10 +123,11 @@ class recycleDom {
     // ====================================
     recycle() {
         let buttonElements = document.querySelectorAll('button[st-element]');
-        debugger;
+        
         for (let index = 0; index < buttonElements.length; index++) {
             let execute = this.executeEvents;
-            buttonElements[index].addEventListener('click', function () {
+            buttonElements[index].addEventListener('click', function (e) {
+                e.preventDefault();
                 let data = JSON.parse(buttonElements[index].getAttribute("st-data"));
                 var actions = buttonElements[index].getAttribute("st-click");
                 execute(); // execute button click event

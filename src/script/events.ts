@@ -6,13 +6,14 @@ export default class Actions {
         this.studentService=new StudentService();
     }
     updateData(data:any):void{
-        debugger;
+        
         console.log(data);
     }
     addNew(){
         let newst:Istudent=new Istudent(10,'supto',16);
-        debugger;
+        
         this.studentService.students.push(newst);
+        debugger;
         console.log(this.studentService.students);
     }
 }
