@@ -8,58 +8,39 @@ Version: 1.1
 'use strict';
 
 //----------- Importing dependencies ------------//
-import {Actions} from "./class.actions";
 import IStudent from "./student";
 import { DomActionHandler } from "./class.domActionHandler";
-
+import { recycleDom } from "./class.recycleDom";
 //----------- Declaring class ------------//
 export class DomActionsControllerModule {
     //----------- variable declaration block ------------//
-    model: any = {};
-    renderEvnt:any;
+
+    private DomActionHandler:DomActionHandler;
+    private recycleDom:recycleDom;
     // ======================================
     // Nucleus fo the class
     // ======================================
     constructor() {
-        
-        this.model = {
-            edit: [{
-                    label: "ID",
-                    input: {
-                        type: 'text',
-                        modelName: 'id'
-                    }
-                },
-                {
-                    label: "Name",
-                    input: {
-                        type: 'text',
-                        modelName: 'name'
-                    }
-                },
-                {
-                    input: {
-                        type: 'button',
-                        value: 'save',
-                        action: 'updateData'
-                    }
-                }
-            ]
-        };
+        this.DomActionHandler=new DomActionHandler();
+        this.recycleDom=new recycleDom();
     }
 
-    //----------- Funciton declaration block ------------//
-
+    //----------- call to hander to digest the dom and rearrange all ------------//
+    callHandlerToDigest(){
+        this.recycleDom.applyDigestLoop();
+    }
     // ====================================
     // event listener for list items
     // ====================================
     listEventListener() {
         let elem = document.querySelectorAll("div#stList ul li");
-        let domActionHandler=new DomActionHandler (this.model);
+        let domActionHandler=new DomActionHandler ();
+        let recycleDom=this.recycleDom;
         for (let index = 0; index < elem.length; index++) {
             let eventData = JSON.parse(elem[index].getAttribute('st-data'));
             elem[index].addEventListener('click', function () {
                 domActionHandler.renderData(eventData);
+                recycleDom.applyDigestLoop();
             });
         }
     }
@@ -69,51 +50,36 @@ export class DomActionsControllerModule {
     // ====================================================
     clickEventsListener() {            
         let elem = document.querySelectorAll("[st-click]");
-        let model = this.model; // storing reference of input fields configuration
-        let domActionHandler=new DomActionHandler (this.model);
+        let domActionHandler=new DomActionHandler ();
         for (let index = 0; index < elem.length; index++) {
+            elem[index].setAttribute('has-event','true');
             let actionsFnc = elem[index].getAttribute('st-click');
-            elem[index].addEventListener('click', function (e) {
+            elem[index].addEventListener('click', function (e) {               
                 domActionHandler.executeEvent(actionsFnc);
             });
         }
     }
-
+    /**
+     * Rendering student list in the DOM element
+     * @param {}
+     */
     renderStudentList(studentList:IStudent[]){
-        let listDom = document.getElementById('stList');
-        let stListDom = "<ul>";
-        for (let index = 0; index < studentList.length; index++) {
-            let dataObj = this.cloneObject(studentList[index]);
-            dataObj.index = index;
-            dataObj = JSON.stringify(dataObj);
-            stListDom += "<li st-data='" + dataObj + "'>id: " +studentList[index].id + " name: " + studentList[index].name + " roll:" + studentList[index].roll + "</li>";
-        }
-        stListDom += "</ul>";
-        listDom.innerHTML = stListDom;
+        this.DomActionHandler.renderStudentList(studentList);
     }
 
-    // ===========================================
-    // deep cloning object
-    // ===========================================
-    
-    cloneObject(obj: any) {
-        if (obj === null || typeof obj !== "object") {
-            return obj;
-        } else if (Array.isArray(obj)) {
-            let clonedArr:any[];
-            obj.forEach(function (element) {
-                clonedArr.push(this.cloneObject(element))
-            });
-            return clonedArr;
-        } else {
-            let clonedObj:any={};
-            for (var prop in obj) {
-                if (obj.hasOwnProperty(prop)) {
-                    clonedObj[prop] = this.cloneObject(obj[prop]);
-                }
-            }
-            return clonedObj;
-        }
+    /**
+     * Getting value form DOM according to the st-model attribute
+     * @param obj
+     */
+    getValueFromModel(models:any){
+        return this.DomActionHandler.getValueFromModel(models);
+    }
+     /**
+     * Clearing form data after any action execution
+     * @param {}
+     */
+    clearFormData(){
+        this.DomActionHandler.clearFormData();
     }
     //----------- Function declaration block ends ------------//
 

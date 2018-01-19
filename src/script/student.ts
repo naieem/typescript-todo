@@ -2,11 +2,9 @@
 // declaring student skull
 // ===============================
 class Student {
-    id:number;
     name:string;
     roll:number;
-    constructor(id:number,name:string,roll:number) {
-        this.id=id;
+    constructor(name:string,roll:number) {
         this.name=name;
         this.roll=roll;
     }

@@ -30,9 +30,6 @@ export default class Bootstrap {
         this.studentService=new StudentService();
         this.actionController=new DomActionsControllerModule();
         this.renderStudentList();
-        //----------- defining clickevent ------------//
-        this.actionController.listEventListener();
-        this.actionController.clickEventsListener();
     }
 
     //----------- Function declaration block ------------//
@@ -44,9 +41,11 @@ export default class Bootstrap {
     
     renderStudentList() {
         this.actionController.renderStudentList(this.getStudentList());
-    }
-
-    
+        //----------- defining clickevent for list elements ------------//
+        this.actionController.listEventListener();
+        //----------- clickevents for add new button ------------//
+        this.actionController.clickEventsListener();
+    }    
 
     // ==============================
     // fetching studentlist
@@ -54,6 +53,13 @@ export default class Bootstrap {
     
     getStudentList(){
         return this.studentService.getAllStudents();
+    }
+    /**
+     * Clearing form data after any action execution
+     * @param {}
+     */
+    clearFormData(){
+        this.actionController.clearFormData();
     }
     //----------- End of function declaration block ------------//
 }
