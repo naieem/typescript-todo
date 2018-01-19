@@ -1,10 +1,19 @@
-// ====================================================
-// student service to interact with data 
-// and api call behavior
-// ====================================================
+/**
+ * Project Name: Typescript todo
+ * Description: Student service to interact with data
+ * Author: Naieem Mahmud Supto
+ * Author URI: http://naieem.me/
+ * Repository: http://github.com/naieem/
+ * Version: 1.2.4
+ * License: GPL2 or later
+ * License URI: https://www.gnu.org/licenses/gpl-2.0.html
+ */
 
-import student from "./student"; // students backbone
+ //----------- Importing dependencies ------------//
+import IStudent from "./student"; // students backbone
 import studentList from './studentList'; // list of initial students
+
+//----------- Declaring class ------------//
 export default class StudentService{
     students:any[];
     // ======================================
@@ -22,8 +31,8 @@ export default class StudentService{
     // =======================================
     // adding new students
     // =======================================
-    addNewStudent(){
-        this.students.push(new student(5,'new',1010));
+    addNewStudent(st:IStudent){
+        this.students.push(st);
         
     }
     editStudent(data:any){
