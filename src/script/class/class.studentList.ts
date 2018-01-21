@@ -9,7 +9,7 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-import student from "./student";
+import student from "./class.student";
 let students=[
     new student('naieem1',101),
     new student('naieem2',102),

@@ -10,8 +10,8 @@
  */
 
  //----------- Importing dependencies ------------//
-import IStudent from "./student"; // students backbone
-import studentList from './studentList'; // list of initial students
+import IStudent from "./class.student"; // students backbone
+import studentList from './class.studentList'; // list of initial students
 
 //----------- Declaring class ------------//
 export default class StudentService{

@@ -10,7 +10,7 @@
  */
 
 //----------- Importing dependencies ------------//
-import Istudent from './student'; // student enum
+import Istudent from './class.student'; // student enum
 import StudentService from './class.studentService'; // list of initial students
 import {DomActionsControllerModule} from './class.domActionController';
 import { DomActionHandler } from './class.domActionHandler';

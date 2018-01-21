@@ -11,7 +11,7 @@
 'use strict';
 
 //----------- Importing dependencies ------------//
-import Istudent from "./student";
+import Istudent from "./class.student";
 import StudentService from "./class.studentService";
 import {DomActionsControllerModule} from './class.domActionController';
 

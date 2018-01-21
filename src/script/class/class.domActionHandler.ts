@@ -12,7 +12,7 @@
  //----------- importng dependencies ------------//
 import { recycleDom } from "./class.recycleDom";
 import {Actions} from "./class.actions";
-import IStudent from "./student";
+import IStudent from "./class.student";
 import model from "./class.model";
 
 

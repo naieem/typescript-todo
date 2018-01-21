@@ -8,7 +8,7 @@ Version: 1.1
 'use strict';
 
 //----------- Importing dependencies ------------//
-import IStudent from "./student";
+import IStudent from "./class.student";
 import { DomActionHandler } from "./class.domActionHandler";
 import { recycleDom } from "./class.recycleDom";
 //----------- Declaring class ------------//

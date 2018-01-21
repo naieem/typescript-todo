@@ -9,14 +9,13 @@
  * License URI: https://www.gnu.org/licenses/gpl-2.0.html
  */
 
-import bootstrap from "./class.appController";
+import bootstrap from "./class/class.appController";
 class nuCleus {
 
     // ======================================
     // main nucleus function of the class
     // ======================================
     constructor() {
-        // new actions().renderStudentList();
         new bootstrap();
     }
 
